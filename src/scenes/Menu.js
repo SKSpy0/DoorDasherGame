@@ -9,10 +9,11 @@ class Menu extends Phaser.Scene{
         //define keyboard controls
         keyUP = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP);
         keyDOWN = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.DOWN);
-        
+
         //UP key pressed
         keyUP.on('down', () => {
             console.log("up key pressed");
+            this.scene.start('playScene');
         });
 
         //DOWN key pressed
