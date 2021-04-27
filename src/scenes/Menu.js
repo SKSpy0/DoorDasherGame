@@ -4,6 +4,6 @@ class Menu extends Phaser.Scene{
     }
     
     create(){
-        this.add.text(640, 360, "Door Dasher Menu");
+        this.add.text(20, 20, "Door Dasher Menu");
     }
 }

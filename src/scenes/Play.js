@@ -4,6 +4,6 @@ class Play extends Phaser.Scene{
     }
 
     create(){
-        this.add.text(640, 360, "Door Dasher Play");
+        this.add.text(20, 20, "Door Dasher Play");
     }
 }

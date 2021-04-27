@@ -2,8 +2,8 @@ console.log("hello");
 
 let config = {
     type: Phaser.CANVAS,
-    width: 1280,
-    height: 720,
+    width: 720,
+    height: 480,
     scene: [Menu, Play, GameOver],
 }
 let game = new Phaser.Game(config);
