@@ -3,7 +3,16 @@ class Menu extends Phaser.Scene{
         super("menuScene");
     }
     
+    preload(){
+        //load assets
+        this.load.image('menuBackground', './assets/background.png');
+    }
+
     create(){
+
+        //show menu screen
+        this.menuScreen = this.add.sprite(0,0, 'menuBackground').setOrigin(0,0);
+
         this.add.text(20, 20, "Door Dasher Menu");
 
         //define keyboard controls
