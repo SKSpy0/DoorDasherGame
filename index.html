@@ -6,14 +6,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DoorDasher</title>
     <style>
+        @font-face {
+            font-family: CustomFont;
+            src:url('./assets/CustomFont.ttf');
+        }
         body {
             background-color:lightblue;
-            display: flex; 
-            align-items: center; 
+            display: flex;
             justify-content: center;
             margin-top: 50px;
         }
     </style>
+    <div style="font-family:CustomFont; position:absolute; left:-1000px; visibility:hidden;">.</div>
 </head>
 <body>
     <script src="./lib/phaser.js"></script>
