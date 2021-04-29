@@ -38,13 +38,11 @@ class Menu extends Phaser.Scene{
 
         //UP key pressed
         keyUP.on('down', () => {
-            console.log("up key pressed");
             this.scene.start('playScene', level);
         });
 
         //DOWN key pressed
         keyDOWN.on('down', () =>{
-            console.log("down key pressed");
         })
     }
 

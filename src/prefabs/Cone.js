@@ -1,6 +1,6 @@
 class Cone extends Phaser.GameObjects.Sprite{
-    constructor(scene, x, y, texture, moveSpeed){
-        super(scene, x, y, texture, moveSpeed);
+    constructor(scene, x, y, texture, frame, moveSpeed){
+        super(scene, x, y, texture, frame);
 
         //add to scene
         scene.add.existing(this);
@@ -10,12 +10,8 @@ class Cone extends Phaser.GameObjects.Sprite{
     }
 
     update(){
-        //moves cone right
-        this.x += this.moveSpeed;
-
-        if(this.x <= 0 - this.width){
-            this.x = game.config.width;
-        }
+        //moves cone left
+        this.x -= this.moveSpeed;
     }
 
     increaseSpeed(moveSpeed){
