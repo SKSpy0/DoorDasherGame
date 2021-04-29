@@ -34,7 +34,7 @@ class Play extends Phaser.Scene{
         this.telephoneP = this.add.tileSprite(0, 0, 720, 480, 'telephoneP').setOrigin(0,0);
         this.fence = this.add.tileSprite(0, 0, 720, 480, 'fence').setOrigin(0,0);
 
-        this.ground = this.physics.add.sprite(0, 0,'road').setOrigin(0, 0);
+        this.ground = this.physics.add.sprite(centerWidth, centerHeight, 'road').setOrigin(0.5);
         this.ground.body.immovable = true;
         this.ground.body.allowGravity = false;
 
@@ -47,7 +47,7 @@ class Play extends Phaser.Scene{
         this.physics.add.collider(this.player, this.ground);
 
 
-        testestestestestsetststesteststetsets
+        fdhhdfdfhdfhdffasdfasdadwasdwasdwasdgasdgffdgfdgdasdgfdfgdfgdasdasd
     }
 
     update() {
