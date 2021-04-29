@@ -3,7 +3,12 @@ class Play extends Phaser.Scene{
         super("playScene");
     }
 
+    init(data){
+        this.level = data;
+    }
+
     preload() {
+        //loading background assets
         this.load.image('sky', './assets/bgSky.png');
         this.load.image('clouds', './assets/bsClouds.png');
         this.load.image('road', './assets/bgRoad.png');
@@ -11,7 +16,10 @@ class Play extends Phaser.Scene{
         this.load.image('trees', './assets/bgTrees.png');
         this.load.image('fence', './assets/bgFence.png');
 
+        //loading player
         this.load.image('playerSprite', './assets/player.png');
+
+        //load obstacles
         this.load.image('cone','./assets/Cone.png');
     }
 
@@ -30,7 +38,6 @@ class Play extends Phaser.Scene{
         this.ground.body.immovable = true;
         this.ground.body.allowGravity = false;
 
-        
         this.player = this.physics.add.sprite(100, 100, 'playerSprite').setOrigin(0,0);
         this.player.setCollideWorldBounds(true);
 

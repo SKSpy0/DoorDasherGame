@@ -15,6 +15,11 @@ class Menu extends Phaser.Scene{
 
     create(){
 
+        //high score
+        let level = {
+            highest: 0
+        };
+
         //add background assets
         this.sky = this.add.tileSprite(0, 0, 720, 480, 'sky').setOrigin(0,0);
         this.clouds = this.add.tileSprite(0, 0, 720, 480, 'clouds').setOrigin(0,0);
@@ -34,7 +39,7 @@ class Menu extends Phaser.Scene{
         //UP key pressed
         keyUP.on('down', () => {
             console.log("up key pressed");
-            this.scene.start('playScene');
+            this.scene.start('playScene', level);
         });
 
         //DOWN key pressed
