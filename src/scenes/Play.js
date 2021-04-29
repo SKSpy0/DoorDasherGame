@@ -45,6 +45,9 @@ class Play extends Phaser.Scene{
 
         cursors = this.input.keyboard.createCursorKeys();
         this.physics.add.collider(this.player, this.ground);
+
+
+        testestestestestsetststesteststetsets
     }
 
     update() {
