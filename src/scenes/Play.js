@@ -15,42 +15,43 @@ class Play extends Phaser.Scene{
         this.load.image('telephoneP', './assets/bgTelephoneP.png');
         this.load.image('trees', './assets/bgTrees.png');
         this.load.image('fence', './assets/bgFence.png');
+        this.load.image('background', './assets/Nbackground.png');
 
         //loading player
         this.load.image('playerSprite', './assets/player.png');
 
         //load obstacles
-        this.load.image('cone','./assets/Cone.png');
+        this.load.image('cone','./assets/cone.png');
     }
 
     create(){
+        //initialize speed of game
+        this.moveSpeed = 1.5;
+
         this.ACCELERATION = 1000;
         this.DRAG = 2000;
         this.physics.world.gravity.y = 1000;
 
-        this.sky = this.add.tileSprite(0, 0, 720, 480, 'sky').setOrigin(0,0);
-        this.clouds = this.add.tileSprite(0, 0, 720, 480, 'clouds').setOrigin(0,0);
-        this.trees = this.add.tileSprite(0, 0, 720, 480, 'trees').setOrigin(0,0);
-        this.telephoneP = this.add.tileSprite(0, 0, 720, 480, 'telephoneP').setOrigin(0,0);
-        this.fence = this.add.tileSprite(0, 0, 720, 480, 'fence').setOrigin(0,0);
-
-        this.ground = this.physics.add.sprite(centerWidth, centerHeight, 'road').setOrigin(0.5);
-        this.ground.body.immovable = true;
-        this.ground.body.allowGravity = false;
+        //place background
+        this.background = this.add.tileSprite(0, 0, 720, 480, 'background').setOrigin(0,0);
 
         this.player = this.physics.add.sprite(100, 100, 'playerSprite').setOrigin(0,0);
         this.player.setCollideWorldBounds(true);
 
-        this.cone = this.add.sprite(100, 150, 'cone').setOrigin(0,0);
-
         cursors = this.input.keyboard.createCursorKeys();
         this.physics.add.collider(this.player, this.ground);
 
-
-        fdhhdfdfhdfhdffasdfasdadwasdwasdwasdgasdgffdgfdgdasdgfdfgdfgdasdasd
+        //adds cone
+        this.cone01 = new Cone(this, game.config.width, 400, 'cone', 0, this.moveSpeed).setOrigin(0,0);
     }
 
     update() {
+        //scrolls background
+        this.background.tilePositionX += this.moveSpeed;
+
+        //updates cone
+        this.cone01.update();
+
         if(cursors.left.isDown) {
             this.player.body.setAccelerationX(-this.ACCELERATION);
         } else if(cursors.right.isDown) {
