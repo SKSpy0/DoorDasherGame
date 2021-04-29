@@ -38,7 +38,6 @@ class Play extends Phaser.Scene{
         this.ground.body.immovable = true;
         this.ground.body.allowGravity = false;
 
-        
         this.player = this.physics.add.sprite(100, 100, 'playerSprite').setOrigin(0,0);
         this.player.setCollideWorldBounds(true);
 
