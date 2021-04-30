@@ -26,36 +26,36 @@ class Play extends Phaser.Scene{
     }
 
     create(){
+        //adding key inputs
+        cursors = this.input.keyboard.createCursorKeys();
+
         //initialize speed of game
         this.moveSpeed = 1.5;
 
-        // Movement/world Physics
-        this.ACCELERATION = 1000;
-        this.DRAG = 2000;
+        //set world gravity
         this.physics.world.gravity.y = 1000;
 
         //place background
         this.background = this.add.tileSprite(0, 0, 720, 480, 'background').setOrigin(0,0);
 
-        // Adding ground platform in the middle of the road
+        //adding ground platform in the middle of the road
         this.platform = this.physics.add.sprite(0,400, 'platform').setOrigin(0,0);
         this.platform.body.immovable = true;
         this.platform.body.allowGravity = false;
 
-        // Placing ground tile in front of the platform
+        //placing ground tile in front of the platform
         this.road = this.add.tileSprite(0, 0, 720, 480, 'road').setOrigin(0,0);
 
-        // Adding player
-        this.player = this.physics.add.sprite(100, 100, 'playerSprite').setOrigin(0,0);
-        this.player.setCollideWorldBounds(true);
+        //adding player
+        this.player = new Player(this, 100, 100, 'playerSprite').setOrigin(0,0);
 
-        cursors = this.input.keyboard.createCursorKeys();
-        this.physics.add.collider(this.player, this.ground);
+        //player cant go off screen
+        this.player.setCollideWorldBounds(true);
 
         //adds cone
         this.cone01 = new Cone(this, game.config.width, 340, 'cone', 0, this.moveSpeed).setOrigin(0,0);
 
-        // Turn on collision between player and ground
+        //turn on collision between player and ground
         this.physics.add.collider(this.player, this.platform);
     }
 
@@ -67,13 +67,7 @@ class Play extends Phaser.Scene{
         //updates cone
         this.cone01.update();
 
-        if(cursors.left.isDown) {
-            this.player.body.setAccelerationX(-this.ACCELERATION);
-        } else if(cursors.right.isDown) {
-            this.player.body.setAccelerationX(this.ACCELERATION);
-        } else {
-            this.player.body.setAccelerationX(0);
-            this.player.body.setDragX(this.DRAG);
-        }
+        //updates player
+        this.player.update();
     }
 }
