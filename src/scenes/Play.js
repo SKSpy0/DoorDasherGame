@@ -30,7 +30,7 @@ class Play extends Phaser.Scene{
         cursors = this.input.keyboard.createCursorKeys();
 
         //initialize speed of game
-        this.moveSpeed = 1.5;
+        this.moveSpeed = 1.8;
 
         //set world gravity
         this.physics.world.gravity.y = 1000;
@@ -38,16 +38,21 @@ class Play extends Phaser.Scene{
         //place background
         this.background = this.add.tileSprite(0, 0, 720, 480, 'background').setOrigin(0,0);
 
-        //adding ground platform in the middle of the road
-        this.platform = this.physics.add.sprite(0,400, 'platform').setOrigin(0,0);
-        this.platform.body.immovable = true;
-        this.platform.body.allowGravity = false;
-
+        //adding ground platform in the middle, upper, and lower section of the road y=400px, 325px, 475px
+        this.middlePlatform = this.physics.add.sprite(0,400, 'platform').setOrigin(0,0);
+        this.middlePlatform.body.immovable = true;
+        this.middlePlatform.body.allowGravity = false;
+        this.upperPlatform = this.physics.add.sprite(0,325, 'platform').setOrigin(0,0);
+        this.upperPlatform.body.immovable = true;
+        this.upperPlatform.body.allowGravity = false;
+        this.lowerPlatform = this.physics.add.sprite(0,475, 'platform').setOrigin(0,0);
+        this.lowerPlatform.body.immovable = true;
+        this.lowerPlatform.body.allowGravity = false;
         //placing ground tile in front of the platform
         this.road = this.add.tileSprite(0, 0, 720, 480, 'road').setOrigin(0,0);
 
         //adding player
-        this.player = new Player(this, 100, 100, 'playerSprite').setOrigin(0,0);
+        this.player = new Player(this, 100, 280, 'playerSprite').setOrigin(0,0);
 
         //player cant go off screen
         this.player.setCollideWorldBounds(true);
@@ -55,8 +60,13 @@ class Play extends Phaser.Scene{
         //adds cone
         this.cone01 = new Cone(this, game.config.width, 340, 'cone', 0, this.moveSpeed).setOrigin(0,0);
 
-        //turn on collision between player and ground
-        this.physics.add.collider(this.player, this.platform);
+        //turn on collision between player and platform (intial: middle platform)
+        this.middle = this.physics.add.collider(this.player, this.middlePlatform);
+        this.upper = this.physics.add.collider(this.player, this.upperPlatform);
+        this.lower = this.physics.add.collider(this.player, this.lowerPlatform);
+        this.middle.active = true;
+        this.upper.active = false;
+        this.lower.active = false;
     }
 
     update() {
@@ -69,5 +79,20 @@ class Play extends Phaser.Scene{
 
         //updates player
         this.player.update();
+
+        //updates platform
+        if (this.player.currentPlatform() == "middle") {
+            this.middle.active = true;
+            this.upper.active = false;
+            this.lower.active = false;
+        } else if(this.player.currentPlatform() == "upper") {
+            this.middle.active = false;
+            this.upper.active = true;
+            this.lower.active = false;
+        } else {
+            this.middle.active = false;
+            this.upper.active = false;
+            this.lower.active = true;
+        }
     }
 }
