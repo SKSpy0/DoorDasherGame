@@ -1,20 +1,24 @@
-class Cone extends Phaser.GameObjects.Sprite{
-    constructor(scene, x, y, texture, frame, moveSpeed){
-        super(scene, x, y, texture, frame);
+//Cone.js uses same structure as Nathan's Paddle Parkour Barrier.js
+class Cone extends Phaser.Physics.Arcade.Sprite {
+    constructor(scene, velocity, platPos) {
+        super(scene, game.config.width + coneWidth , platPos, 'cone');
 
-        //add to scene
         scene.add.existing(this);
-
-        //stores movespeed value
-        this.moveSpeed = moveSpeed;
+        scene.physics.add.existing(this);
+        this.setVelocityX(velocity);
+        this.setImmovable();
+        this.body.setAllowGravity(false);
+        this.newCone = true;
     }
 
     update(){
-        //moves cone left
-        this.x -= this.moveSpeed;
-    }
+        if(this.newCone && this.x < 0){
+            this.newCone = false;
+            this.scene.addCone(this.parent, this.velocity);
+        }
 
-    increaseSpeed(moveSpeed){
-        this.moveSpeed = moveSpeed;
+        if(this.x < 0){
+            this.destroy();
+        }
     }
 }

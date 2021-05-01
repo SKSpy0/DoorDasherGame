@@ -1,6 +1,5 @@
-let cursors;
 let config = {
-    type: Phaser.CANVAS,
+    type: Phaser.AUTO,
     width: 720,
     height: 480,
     physics: {
@@ -17,12 +16,13 @@ let config = {
 }
 let game = new Phaser.Game(config);
 
-//set UI Sizes
-let borderUISize = game.config.height / 15;
-let borderPadding = borderUISize / 3;
-
+//define global variables
 let centerHeight = game.config.height/2;
 let centerWidth = game.config.width/2;
+const coneWidth = 42;
+const coneHeight = 42;
+let level;
+let cursors;
 
 //keyboard controls 
 let keyUP, keyDOWN;

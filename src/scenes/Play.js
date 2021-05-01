@@ -1,11 +1,17 @@
 class Play extends Phaser.Scene{
     constructor(){
         super("playScene");
+        this.coneCollided = false;
+        this.carCollided = false;
+        this.holeCollided = false;
+        this.constructFenceCollided = false;
     }
 
     init(data){
         this.level = data;
     }
+
+    
 
     preload() {
         //loading background assets
@@ -26,11 +32,9 @@ class Play extends Phaser.Scene{
     }
 
     create(){
-        //adding key inputs
-        cursors = this.input.keyboard.createCursorKeys();
-
-        //initialize speed of game
-        this.moveSpeed = 1.8;
+        //set parameters
+        this.moveSpeed = 2.5;
+        this.obstacleSpeed = -400;
 
         //set world gravity
         this.physics.world.gravity.y = 1000;
@@ -48,17 +52,23 @@ class Play extends Phaser.Scene{
         this.lowerPlatform = this.physics.add.sprite(0,475, 'platform').setOrigin(0,0);
         this.lowerPlatform.body.immovable = true;
         this.lowerPlatform.body.allowGravity = false;
+
         //placing ground tile in front of the platform
         this.road = this.add.tileSprite(0, 0, 720, 480, 'road').setOrigin(0,0);
 
-        //adding player
+        //creating player and setting bounds
         this.player = new Player(this, 100, 280, 'playerSprite').setOrigin(0,0);
-
-        //player cant go off screen
         this.player.setCollideWorldBounds(true);
+        this.player.depth = 1;
 
-        //adds cone
-        this.cone01 = new Cone(this, game.config.width, 340, 'cone', 0, this.moveSpeed).setOrigin(0,0);
+        // set up each obstacle group (cone, manhole, car, construction fence)
+        this.coneGroup = this.add.group({
+            runChildUpdate: true
+        });
+        //wait a bit before spawning obstacles (type: cone = 0, manhole = 1, car = 2, construct fence = 3)
+        this.time.delayedCall(1000, () => {
+            this.addCone();
+        })
 
         //turn on collision between player and platform (intial: middle platform)
         this.middle = this.physics.add.collider(this.player, this.middlePlatform);
@@ -67,6 +77,32 @@ class Play extends Phaser.Scene{
         this.middle.active = true;
         this.upper.active = false;
         this.lower.active = false;
+
+        //check for collisions
+        this.physics.add.overlap(this.player, this.coneGroup, () => {
+            this.coneCollided = true;
+        });
+
+        //adding key inputs
+        cursors = this.input.keyboard.createCursorKeys();
+    }
+    
+    // creates new obstacles and add them to the respective group
+    // obstacle group implementation was taken from Nathan Altice's Paddle Parkour
+    addCone(){
+        //(0 = middle, 1 = upper, 2 = lower)
+        let ranConePos = Math.floor(Math.random() * 3);
+        //used for spawning cone
+        let spawnPos;
+        if(ranConePos == 0){
+            spawnPos = 400;
+        } else if(ranConePos == 1){
+            spawnPos = 325;
+        } else {
+            spawnPos = 475;
+        }
+        let cone = new Cone(this, this.obstacleSpeed, spawnPos - coneHeight/2);
+        this.coneGroup.add(cone);
     }
 
     update() {
@@ -74,11 +110,16 @@ class Play extends Phaser.Scene{
         this.background.tilePositionX += this.moveSpeed;
         this.road.tilePositionX += this.moveSpeed;
 
-        //updates cone
-        this.cone01.update();
-
         //updates player
         this.player.update();
+
+        //if player is still alive
+        if(!this.player.destroyed){
+            if(this.coneCollided){
+                console.log("collided with cone")
+            }
+        }
+        this.coneCollided = false;
 
         //updates platform
         if (this.player.currentPlatform() == "middle") {

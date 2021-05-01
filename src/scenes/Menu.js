@@ -40,10 +40,6 @@ class Menu extends Phaser.Scene{
         keyUP.on('down', () => {
             this.scene.start('playScene', level);
         });
-
-        //DOWN key pressed
-        keyDOWN.on('down', () =>{
-        })
     }
 
     update() {
