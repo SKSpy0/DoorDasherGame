@@ -9,6 +9,7 @@ class Cone extends Phaser.Physics.Arcade.Sprite {
         this.setImmovable();
         this.body.setAllowGravity(false);
         this.newCone = true;
+        this.platPos = platPos;
     }
 
     update(){
@@ -20,5 +21,9 @@ class Cone extends Phaser.Physics.Arcade.Sprite {
         if(this.x < 0){
             this.destroy();
         }
+    }
+
+    getPlatPos() {
+        return this.platPos;
     }
 }

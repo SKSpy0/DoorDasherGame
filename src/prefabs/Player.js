@@ -76,4 +76,14 @@ class Player extends Phaser.Physics.Arcade.Sprite{
     currentPlatform() {
         return this.platform;
     }
+
+    currentPlatformY() {
+        if(this.platform == "middle") {
+            return (400-coneHeight/2);
+        } else if (this.platform == "upper") {
+            return (325-coneHeight/2);
+        } else {
+            return (475-coneHeight/2);
+        }
+    }
 }

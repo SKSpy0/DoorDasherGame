@@ -78,10 +78,6 @@ class Play extends Phaser.Scene{
         this.upper.active = false;
         this.lower.active = false;
 
-        //check for collisions
-        this.physics.add.overlap(this.player, this.coneGroup, () => {
-            this.coneCollided = true;
-        });
 
         //adding key inputs
         cursors = this.input.keyboard.createCursorKeys();
@@ -102,6 +98,12 @@ class Play extends Phaser.Scene{
             spawnPos = 475;
         }
         let cone = new Cone(this, this.obstacleSpeed, spawnPos - coneHeight/2);
+        //adds collision check if player and cone are on the same y value
+        this.physics.add.overlap(this.player, cone, (player, cone) => {
+            if(cone.getPlatPos() == player.currentPlatformY()) {
+                this.coneCollided = true;
+            }
+        });
         this.coneGroup.add(cone);
     }
 
