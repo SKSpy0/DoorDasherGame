@@ -21,6 +21,8 @@ let centerHeight = game.config.height/2;
 let centerWidth = game.config.width/2;
 const coneWidth = 42;
 const coneHeight = 42;
+const holeWidth = 54;
+const holeHeight = 34;
 let level;
 let cursors;
 

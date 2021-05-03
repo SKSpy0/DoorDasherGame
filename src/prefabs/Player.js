@@ -8,7 +8,7 @@ class Player extends Phaser.Physics.Arcade.Sprite{
         this.scene.add.existing(this);
 
         // Set initial values
-        this.acceleration = 500;
+        this.acceleration = 300;
         this.drag = 4000;
         this.jump = -500;
         this.maxXVelocity = 200;
@@ -79,11 +79,11 @@ class Player extends Phaser.Physics.Arcade.Sprite{
 
     currentPlatformY() {
         if(this.platform == "middle") {
-            return (400-coneHeight/2);
+            return (400);
         } else if (this.platform == "upper") {
-            return (325-coneHeight/2);
+            return (325);
         } else {
-            return (475-coneHeight/2);
+            return (475);
         }
     }
 }

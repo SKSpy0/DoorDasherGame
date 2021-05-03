@@ -1,10 +1,14 @@
 class Play extends Phaser.Scene{
     constructor(){
         super("playScene");
+        //bool for collisions
         this.coneCollided = false;
         this.carCollided = false;
         this.holeCollided = false;
         this.constructFenceCollided = false;
+
+        //for current level number
+        this.currentlevel = 0;
     }
 
     init(data){
@@ -29,12 +33,14 @@ class Play extends Phaser.Scene{
 
         //load obstacles
         this.load.image('cone','./assets/cone.png');
+        this.load.image('manhole', './assets/manHoleHole.png');
     }
 
     create(){
         //set parameters
-        this.moveSpeed = 2.5;
-        this.obstacleSpeed = -400;
+        this.moveSpeed = 3
+        this.obstacleSpeed = -200;
+        this.obstacleSpeedMax = -500;
 
         //set world gravity
         this.physics.world.gravity.y = 1000;
@@ -65,10 +71,22 @@ class Play extends Phaser.Scene{
         this.coneGroup = this.add.group({
             runChildUpdate: true
         });
-        //wait a bit before spawning obstacles (type: cone = 0, manhole = 1, car = 2, construct fence = 3)
-        this.time.delayedCall(1000, () => {
+        this.carGroup = this.add.group({
+            runChildUpdate: true
+        });
+        this.manholeGroup = this.add.group({
+            runChildUpdate: true
+        });
+
+        //wait a bit before spawning obstacles
+        this.time.delayedCall(3000, () => {
             this.addCone();
         })
+        /*
+        this.time.delayedCall(5500, () => {
+            this.addManhole();
+        })
+        */
 
         //turn on collision between player and platform (intial: middle platform)
         this.middle = this.physics.add.collider(this.player, this.middlePlatform);
@@ -78,6 +96,13 @@ class Play extends Phaser.Scene{
         this.upper.active = false;
         this.lower.active = false;
 
+        //difficulty loop (adjust delay to make delay more or less)
+        this.difficultyTimer = this.time.addEvent({
+            delay: 1000,
+            callback: this.levelIncrease,
+            callbackScope: this,
+            loop: true
+        })
 
         //adding key inputs
         cursors = this.input.keyboard.createCursorKeys();
@@ -87,17 +112,18 @@ class Play extends Phaser.Scene{
     // obstacle group implementation was taken from Nathan Altice's Paddle Parkour
     addCone(){
         //(0 = middle, 1 = upper, 2 = lower)
-        let ranConePos = Math.floor(Math.random() * 3);
-        //used for spawning cone
-        let spawnPos;
-        if(ranConePos == 0){
+        let ranPos = Math.floor(Math.random() * 3);
+        //used for spawning cone and will spawn on 0 = middle, 1 = lower, 2 = upper
+        let spawnPos
+        if(ranPos == 0){
             spawnPos = 400;
-        } else if(ranConePos == 1){
-            spawnPos = 325;
-        } else {
+        } else if(ranPos == 1) {
             spawnPos = 475;
+        } else {
+            spawnPos = 325;
         }
-        let cone = new Cone(this, this.obstacleSpeed, spawnPos - coneHeight/2);
+
+        let cone = new Cone(this, this.obstacleSpeed, spawnPos - coneHeight/2, 'cone');
         //adds collision check if player and cone are on the same y value
         this.physics.add.overlap(this.player, cone, (player, cone) => {
             if(cone.getPlatPos() == player.currentPlatformY()) {
@@ -106,7 +132,20 @@ class Play extends Phaser.Scene{
         });
         this.coneGroup.add(cone);
     }
-
+    /*
+    addManhole(){
+        let ranHolePos = Math.floor(Math.random() * 2);
+        //manhole only spawn on middle since thats the road
+        let spawnPos = 400;
+        let manhole = new Manhole(this, this.obstacleSpeed, spawnPos);
+        this.physics.add.overlap(this.player, manhole, (player, manhole) => {
+            if(manhole.getPlatPos() == player.currentPlatformY()){
+                this.holeCollided = true;
+            }
+        });
+        this.manholeGroup.add(manhole);
+    }
+    */
     update() {
         //scrolls background and road
         this.background.tilePositionX += this.moveSpeed;
@@ -120,8 +159,13 @@ class Play extends Phaser.Scene{
             if(this.coneCollided){
                 console.log("collided with cone")
             }
+            this.coneCollided = false;
+            /*if(this.holeCollided){
+                console.log("collided with manhole");
+            }
+            this.holeCollided = false;
+            */
         }
-        this.coneCollided = false;
 
         //updates platform
         if (this.player.currentPlatform() == "middle") {
@@ -136,6 +180,20 @@ class Play extends Phaser.Scene{
             this.middle.active = false;
             this.upper.active = false;
             this.lower.active = true;
+        }
+    }
+
+    //simple level increase from Nathan's Paddle Parkour
+    levelIncrease(){
+        //increment level
+        this.currentlevel++;
+
+        if(this.currentlevel > 0){
+            console.log('level: ${this.currentlevel}');
+            if(this.obstacleSpeed >= this.obstacleSpeedMax){
+                this.obstacleSpeed *= 1.5;
+                this.moveSpeed *= 1.5;
+            }
         }
     }
 }
