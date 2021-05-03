@@ -189,7 +189,7 @@ class Play extends Phaser.Scene{
         this.currentlevel++;
 
         if(this.currentlevel > 0){
-            console.log('level: ${this.currentlevel}');
+            console.log(this.currentlevel);
             if(this.obstacleSpeed >= this.obstacleSpeedMax){
                 this.obstacleSpeed *= 1.5;
                 this.moveSpeed *= 1.5;
