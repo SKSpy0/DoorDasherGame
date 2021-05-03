@@ -15,6 +15,8 @@ class Player extends Phaser.Physics.Arcade.Sprite{
         this.maxYvelocity = 5000;
         this.setMaxVelocity(this.maxXVelocity, this.maxYvelocity);
         this.platform = "middle";
+        this.gravity = 400;
+        this.setGravity(0, this.gravity);
     }
 
     update() {
@@ -47,8 +49,8 @@ class Player extends Phaser.Physics.Arcade.Sprite{
 
         // Makes it so you jump a fixed amount
         if(!this.body.touching.down) {
-            // this.body.setVelocityX(0);
-            this.body.setVelocityX(50);
+            this.body.setVelocityX(0);
+            // this.body.setVelocityX(50);
         }
 
         // Switching platforms
@@ -85,5 +87,11 @@ class Player extends Phaser.Physics.Arcade.Sprite{
         } else {
             return (475);
         }
+    }
+
+    // Adjust jumping based on speed of the game
+    nextLevel() {
+        this.setGravity(0, this.gravity *2.5);
+        this.jump *= 1.1;
     }
 }

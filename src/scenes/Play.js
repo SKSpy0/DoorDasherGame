@@ -62,6 +62,16 @@ class Play extends Phaser.Scene{
         //placing ground tile in front of the platform
         this.road = this.add.tileSprite(0, 0, 720, 480, 'road').setOrigin(0,0);
 
+        //ui text
+        let uiConfig = {
+            fontFamily: 'CustomFont',
+            fontSize: '26px',
+            color: 'red',
+        }
+        this.deliveryNum = 1;
+        this.add.text(10, 10, "Delivery Num:", uiConfig).setOrigin(0,0);
+        this.deliveryNumText = this.add.text(185, 10, this.deliveryNum, uiConfig).setOrigin(0,0);
+
         //creating player and setting bounds
         this.player = new Player(this, 100, 280, 'playerSprite').setOrigin(0,0);
         this.player.setCollideWorldBounds(true);
@@ -98,7 +108,7 @@ class Play extends Phaser.Scene{
 
         //difficulty loop (adjust delay to make delay more or less)
         this.difficultyTimer = this.time.addEvent({
-            delay: 1000,
+            delay: 10000,
             callback: this.levelIncrease,
             callbackScope: this,
             loop: true
@@ -187,12 +197,16 @@ class Play extends Phaser.Scene{
     levelIncrease(){
         //increment level
         this.currentlevel++;
-
         if(this.currentlevel > 0){
             console.log(this.currentlevel);
             if(this.obstacleSpeed >= this.obstacleSpeedMax){
                 this.obstacleSpeed *= 1.5;
                 this.moveSpeed *= 1.5;
+                //increments the delivery number text
+                this.deliveryNum++;
+                this.deliveryNumText.text = this.deliveryNum;
+                //adjust the player jump
+                this.player.nextLevel();
             }
         }
     }
