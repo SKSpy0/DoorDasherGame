@@ -11,9 +11,17 @@ class Menu extends Phaser.Scene{
         this.load.image('telephoneP', './assets/bgTelephoneP.png');
         this.load.image('trees', './assets/bgTrees.png');
         this.load.image('fence', './assets/bgFence.png');
+
+        this.load.audio('menubgm', './assets/DoorDasher1_BeepBox_8BitLoop.mp3');
     }
 
     create(){
+        //play music
+        this.menubgm = this.sound.add('menubgm', {
+            loop:true,
+            volume: 0.5
+        });
+        this.menubgm.play();
 
         //high score
         let level = {
@@ -36,10 +44,14 @@ class Menu extends Phaser.Scene{
         keyUP = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP);
         keyDOWN = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.DOWN);
 
-        //UP key pressed
+        //UP key pressed starts fade out transition to next scene
         keyUP.on('down', () => {
-            this.scene.start('playScene', level);
+            this.cameras.main.fadeOut(1000, 0, 0, 0);
+            this.menubgm.pause();
         });
+        this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, (cam, effect) => {
+            this.scene.start('playScene', level);
+        })
     }
 
     update() {
