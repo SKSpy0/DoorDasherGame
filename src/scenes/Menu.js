@@ -50,7 +50,7 @@ class Menu extends Phaser.Scene{
             this.menubgm.pause();
         });
         this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, (cam, effect) => {
-            this.scene.start('playScene', level);
+            this.scene.start('startScene', level);
         })
     }
 
