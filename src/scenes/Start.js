@@ -28,11 +28,11 @@ class Start extends Phaser.Scene{
         this.add.tileSprite(0, 0, 720, 480, 'clouds').setOrigin(0,0);
         this.add.tileSprite(0, 0, 720, 480, 'trees').setOrigin(0,0);
         this.add.tileSprite(0, 0, 720, 480, 'telephoneP').setOrigin(0,0);
-        this.add.tileSprite(centerWidth, centerHeight-20, 280, 206, 'pizzeria').setOrigin(0.5);
+        this.add.tileSprite(140, centerHeight-20, 280, 206, 'pizzeria').setOrigin(0.5);
         this.add.tileSprite(0, 0, 720, 480, 'road').setOrigin(0,0);
 
         //add player animation
-        this.idleplayer = this.add.sprite(centerWidth, centerHeight+30, 'noticeSprite', 0).setOrigin(0,0);
+        this.idleplayer = this.add.sprite(140, centerHeight+30, 'noticeSprite', 0).setOrigin(0,0);
         this.anims.create({
             key: 'notice',
             frameRate: 8,
