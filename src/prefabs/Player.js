@@ -15,25 +15,37 @@ class Player extends Phaser.Physics.Arcade.Sprite{
         this.maxYvelocity = 5000;
         this.setMaxVelocity(this.maxXVelocity, this.maxYvelocity);
         this.platform = "middle";
-        this.gravity = 400;
+        this.gravity = 200;
         this.setGravity(0, this.gravity);
+
+        // Play running animation
+        this.anims.play('run', true);
+
+        // Adjust player box
+        this.body.width = 80;
     }
 
     update() {
         if(cursors.left.isDown) {
             // Move left
+            this.body.setAccelerationX(-this.acceleration);
+            /*
             if(this.body.touching.down) {
                 this.body.setAccelerationX(-this.acceleration);
             }
+            */
             // Lets you jump while holding left
             if(this.body.touching.down && Phaser.Input.Keyboard.JustDown(cursors.space)) {
                 this.body.setVelocityY(this.jump);
             }
         } else if(cursors.right.isDown) {
             // Move right
+            this.body.setAccelerationX(this.acceleration);
+            /*
             if(this.body.touching.down) {
                 this.body.setAccelerationX(this.acceleration);
             }
+            */
             // Lets you jump while holding right
             if(this.body.touching.down && Phaser.Input.Keyboard.JustDown(cursors.space)) {
                 this.body.setVelocityY(this.jump);
@@ -48,11 +60,12 @@ class Player extends Phaser.Physics.Arcade.Sprite{
         }
 
         // Makes it so you jump a fixed amount
+        /*
         if(!this.body.touching.down) {
-            this.body.setVelocityX(0);
-            this.body.setVelocityX(50);
+            //this.body.setVelocityX(0);
+            //this.body.setVelocityX(50);
         }
-       
+        */
         // Switching platforms
         if(this.body.touching.down && Phaser.Input.Keyboard.JustDown(cursors.up)) {
             if(this.platform == "lower") {
@@ -88,10 +101,9 @@ class Player extends Phaser.Physics.Arcade.Sprite{
             return (475);
         }
     }
-
     // Adjust jumping based on speed of the game
     nextLevel() {
-        this.setGravity(0, this.gravity *2.5);
-        this.jump *= 1.1;
+        this.setGravity(0, this.gravity *1.5);
+        this.jump *= 1.01;
     }
 }
