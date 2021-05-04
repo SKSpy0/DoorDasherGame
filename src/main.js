@@ -23,6 +23,8 @@ const coneWidth = 42;
 const coneHeight = 42;
 const holeWidth = 54;
 const holeHeight = 34;
+const houseWidth = 300;
+const houseHeight = 206;
 let level;
 let cursors;
 

@@ -48,12 +48,11 @@ class Player extends Phaser.Physics.Arcade.Sprite{
         }
 
         // Makes it so you jump a fixed amount
-        /*if(!this.body.touching.down) {
+        if(!this.body.touching.down) {
             this.body.setVelocityX(0);
             this.body.setVelocityX(50);
         }
-        */
-
+       
         // Switching platforms
         if(this.body.touching.down && Phaser.Input.Keyboard.JustDown(cursors.up)) {
             if(this.platform == "lower") {

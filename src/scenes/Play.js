@@ -31,6 +31,10 @@ class Play extends Phaser.Scene{
         //loading player
         this.load.image('playerSprite', './assets/player.png');
 
+        //load house asset
+        this.load.image('houseSprite', './assets/house.png');
+        this.load.image('deliveredHouse', './assets/deliveredhouse.png');
+
         //load obstacles
         this.load.image('cone','./assets/cone.png');
         this.load.image('manhole', './assets/manHoleHole.png');
@@ -41,6 +45,7 @@ class Play extends Phaser.Scene{
         this.moveSpeed = 3
         this.obstacleSpeed = -200;
         this.obstacleSpeedMax = -500;
+        this.deliveryNum = 0;
 
         //set world gravity
         this.physics.world.gravity.y = 1000;
@@ -68,10 +73,11 @@ class Play extends Phaser.Scene{
             fontSize: '26px',
             color: 'red',
         }
-        this.deliveryNum = 1;
+
+        // setting up number of deliveries
         this.add.text(10, 10, "Delivery Num:", uiConfig).setOrigin(0,0);
         this.deliveryNumText = this.add.text(185, 10, this.deliveryNum, uiConfig).setOrigin(0,0);
-
+        
         //creating player and setting bounds
         this.player = new Player(this, 100, 280, 'playerSprite').setOrigin(0,0);
         this.player.setCollideWorldBounds(true);
@@ -81,10 +87,10 @@ class Play extends Phaser.Scene{
         this.coneGroup = this.add.group({
             runChildUpdate: true
         });
-        this.carGroup = this.add.group({
+        this.manholeGroup = this.add.group({
             runChildUpdate: true
         });
-        this.manholeGroup = this.add.group({
+        this.houseGroup = this.add.group({
             runChildUpdate: true
         });
 
@@ -92,11 +98,12 @@ class Play extends Phaser.Scene{
         this.time.delayedCall(3000, () => {
             this.addCone();
         })
-        /*
         this.time.delayedCall(5500, () => {
             this.addManhole();
         })
-        */
+        this.time.delayedCall(1000, () => {
+            this.createHouse();
+        })
 
         //turn on collision between player and platform (intial: middle platform)
         this.middle = this.physics.add.collider(this.player, this.middlePlatform);
@@ -106,18 +113,33 @@ class Play extends Phaser.Scene{
         this.upper.active = false;
         this.lower.active = false;
 
-        //difficulty loop (adjust delay to make delay more or less)
-        this.difficultyTimer = this.time.addEvent({
+        //loop house calls
+        this.houseSpawnTimer = this.time.addEvent({
             delay: 10000,
-            callback: this.levelIncrease,
+            callback: this.createHouse,
             callbackScope: this,
             loop: true
-        })
+        });
 
         //adding key inputs
         cursors = this.input.keyboard.createCursorKeys();
     }
     
+    // creates the delivery house
+    createHouse(){
+        let house = new House(this, this.obstacleSpeed, 325 - houseHeight/2);
+        let firstCol = false;
+        this.physics.add.overlap(this.player, house, (player, house) => {
+            if(house.getPlatPos() == player.currentPlatformY() && !firstCol){
+                console.log("collided with house");
+                this.levelIncrease();
+                house.setTexture('deliveredHouse')
+                firstCol = true;
+            }
+        });
+        this.houseGroup.add(house);
+    }
+
     // creates new obstacles and add them to the respective group
     // obstacle group implementation was taken from Nathan Altice's Paddle Parkour
     addCone(){
@@ -133,29 +155,30 @@ class Play extends Phaser.Scene{
             spawnPos = 325;
         }
 
-        let cone = new Cone(this, this.obstacleSpeed, spawnPos - coneHeight/2, 'cone');
+        let cone = new Cone(this, this.obstacleSpeed, spawnPos - coneHeight/2);
         //adds collision check if player and cone are on the same y value
         this.physics.add.overlap(this.player, cone, (player, cone) => {
             if(cone.getPlatPos() == player.currentPlatformY()) {
                 this.coneCollided = true;
+                cone.destroy();
             }
         });
         this.coneGroup.add(cone);
     }
-    /*
+    
     addManhole(){
-        let ranHolePos = Math.floor(Math.random() * 2);
         //manhole only spawn on middle since thats the road
         let spawnPos = 400;
         let manhole = new Manhole(this, this.obstacleSpeed, spawnPos);
         this.physics.add.overlap(this.player, manhole, (player, manhole) => {
             if(manhole.getPlatPos() == player.currentPlatformY()){
                 this.holeCollided = true;
+                manhole.destroy();
             }
         });
         this.manholeGroup.add(manhole);
     }
-    */
+    
     update() {
         //scrolls background and road
         this.background.tilePositionX += this.moveSpeed;
@@ -169,13 +192,12 @@ class Play extends Phaser.Scene{
             if(this.coneCollided){
                 console.log("collided with cone")
             }
-            this.coneCollided = false;
-            /*if(this.holeCollided){
+            if(this.holeCollided){
                 console.log("collided with manhole");
             }
-            this.holeCollided = false;
-            */
         }
+        this.coneCollided = false;
+        this.holeCollided = false;
 
         //updates platform
         if (this.player.currentPlatform() == "middle") {
@@ -199,15 +221,16 @@ class Play extends Phaser.Scene{
         this.currentlevel++;
         if(this.currentlevel > 0){
             console.log(this.currentlevel);
+            //make sure the obstacle speed doesn't increase too much
             if(this.obstacleSpeed >= this.obstacleSpeedMax){
-                this.obstacleSpeed *= 1.5;
-                this.moveSpeed *= 1.5;
-                //increments the delivery number text
-                this.deliveryNum++;
-                this.deliveryNumText.text = this.deliveryNum;
-                //adjust the player jump
-                this.player.nextLevel();
+                this.obstacleSpeed *= 1.2;
+                this.moveSpeed *= 1.2;
             }
+            //increments the delivery number text
+            this.deliveryNum++;
+            this.deliveryNumText.text = this.deliveryNum;
+            //adjust the player jump
+            this.player.nextLevel();
         }
     }
 }

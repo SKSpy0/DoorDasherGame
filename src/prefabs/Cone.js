@@ -28,6 +28,6 @@ class Cone extends Phaser.Physics.Arcade.Sprite {
 
     //returns current position of cone, used in checking collision with player
     getPlatPos() {
-        return (this.platPos);
+        return (this.platPos + coneHeight/2);
     }
 }
