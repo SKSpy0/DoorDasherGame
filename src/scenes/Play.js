@@ -29,7 +29,8 @@ class Play extends Phaser.Scene{
         this.load.image('background', './assets/Nbackground.png');
 
         //loading player
-        this.load.image('playerSprite', './assets/player.png');
+        // this.load.image('playerSprite', './assets/player.png');
+        this.load.spritesheet('playerSprite', './assets/RunS.png', {frameWidth: 96, frameHeight: 176});
 
         //load house asset
         this.load.image('houseSprite', './assets/house.png');
@@ -41,6 +42,9 @@ class Play extends Phaser.Scene{
     }
 
     create(){
+        //add transition effect
+        this.cameras.main.fadeIn(1000, 0, 0, 0);
+        
         //set parameters
         this.moveSpeed = 3
         this.obstacleSpeed = -200;
@@ -79,7 +83,13 @@ class Play extends Phaser.Scene{
         this.deliveryNumText = this.add.text(185, 10, this.deliveryNum, uiConfig).setOrigin(0,0);
         
         //creating player and setting bounds
-        this.player = new Player(this, 100, 280, 'playerSprite').setOrigin(0,0);
+        this.anims.create({
+            key: 'run',
+            frameRate: 8,
+            repeat: -1,
+            frames: this.anims.generateFrameNumbers('playerSprite', { start: 0, end: 3 }),
+        });
+        this.player = new Player(this, 100, 200, 'playerSprite').setOrigin(0,0);
         this.player.setCollideWorldBounds(true);
         this.player.depth = 1;
 
@@ -191,9 +201,11 @@ class Play extends Phaser.Scene{
         if(!this.player.destroyed){
             if(this.coneCollided){
                 console.log("collided with cone")
+                this.cameras.main.shake(100, 0.0035);
             }
             if(this.holeCollided){
                 console.log("collided with manhole");
+                this.cameras.main.shake(100, 0.0035);
             }
         }
         this.coneCollided = false;
