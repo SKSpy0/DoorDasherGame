@@ -29,8 +29,13 @@ class Play extends Phaser.Scene{
         this.load.image('cone','./assets/cone.png');
         this.load.image('constructionFence', './assets/Rbarricade.png');
         
+        //load star ratings
         this.load.image('star', './assets/Star.png');
         this.load.image('crackedStar', './assets/CrackedStar.png');
+
+        //load audio assets
+        this.load.audio('deliverySound', './assets/DeliveryCompleted.wav');
+        this.load.audio('obstacleHitSound', './assets/ObstacleHit.wav');
     }
 
     create(){
@@ -47,6 +52,16 @@ class Play extends Phaser.Scene{
 
         //set world gravity
         this.physics.world.gravity.y = 1000;
+
+        //assign sounds
+        this.deliverySound = this.sound.add('deliverySound', {
+            loop: false,
+            volume: 0.5
+        });
+        this.hitSound = this.sound.add('obstacleHitSound', {
+            loop: false,
+            volume: 0.5
+        });
 
         //place background
         this.background = this.add.tileSprite(0, 0, 720, 480, 'background').setOrigin(0,0);
@@ -149,7 +164,8 @@ class Play extends Phaser.Scene{
         let firstCol = false;
         this.physics.add.overlap(this.player, house, (player, house) => {
             if(house.getPlatPos() == player.currentPlatformY() && !firstCol){
-                console.log("collided with house");
+                //console.log("collided with house");
+                this.deliverySound.play();
                 this.levelIncrease();
                 house.setTexture('deliveredHouse')
                 firstCol = true;
@@ -223,8 +239,9 @@ class Play extends Phaser.Scene{
         //if player is still alive
         if(!this.player.destroyed){
             if(this.coneCollided){
-                console.log("collided with cone")
+                //console.log("collided with cone")
                 this.cameras.main.shake(100, 0.0035);
+                this.hitSound.play();
                 //lose one life
                 if(this.rating > 0) {
                     this.rating--;
@@ -232,9 +249,9 @@ class Play extends Phaser.Scene{
                 }
             }
             if(this.fenceCollided){
-                console.log("collided with fence");
+                //console.log("collided with fence");
                 this.cameras.main.shake(100, 0.0035);
-
+                this.hitSound.play();
                 // lose one life
                 if(this.rating > 0) {
                     this.rating--;
@@ -267,7 +284,7 @@ class Play extends Phaser.Scene{
         //increment level
         level++;
         if(level > 0){
-            console.log(level);
+            //console.log(level);
             //make sure the obstacle speed doesn't increase too much
             if(this.obstacleSpeed >= this.obstacleSpeedMax){
                 this.obstacleSpeed *= 1.2;

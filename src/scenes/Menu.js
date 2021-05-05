@@ -34,6 +34,9 @@ class Menu extends Phaser.Scene{
         //add title text
         this.add.text(centerWidth, centerHeight-75, 'Door Dasher', { fontFamily: 'CustomFont', fontSize: '90px', color: 'red'}).setOrigin(0.5);
         this.add.text(centerWidth, centerHeight, 'Press UP to Start', { fontFamily: 'CustomFont', fontSize: '20px', color: 'red'}).setOrigin(0.5);
+        this.add.text(centerWidth, centerHeight+125, 'Controls:', {fontFamily: 'CustomFont', fontSize: '20px', color: 'red'}).setOrigin(0.5);
+        this.add.text(centerWidth, centerHeight+150, 'Move around with ARROW keys', {fontFamily: 'CustomFont', fontSize: '20px', color: 'red'}).setOrigin(0.5);
+        this.add.text(centerWidth, centerHeight+175, 'Press SPACE to jump', {fontFamily: 'CustomFont', fontSize: '20px', color: 'red'}).setOrigin(0.5);
 
         //define keyboard controls
         keyUP = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP);
