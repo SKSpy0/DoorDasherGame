@@ -2,6 +2,7 @@ class Start extends Phaser.Scene{
     constructor(){
         super("startScene");
     }
+
     preload(){
         //load assets
         this.load.image('sky', './assets/bgSky.png');
@@ -17,6 +18,13 @@ class Start extends Phaser.Scene{
         this.load.spritesheet('idleSprite', './assets/IdleS.png', {frameWidth: 48, frameHeight: 68});
     }
     create() {
+        //check for local storage support
+        if(window.localStorage){
+            console.log('local storage supported');
+        } else {
+            console.log('local storage not supported');
+        }
+
         //fade in transition
         this.cameras.main.fadeIn(1000, 0, 0, 0);
         this.startbgm = this.sound.add('startbgm', {

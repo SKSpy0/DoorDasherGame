@@ -26,6 +26,8 @@ const fenceHeight = 85;
 const houseWidth = 300;
 const houseHeight = 206;
 let level;
+let highscore;
+let newHighScore = false;
 let cursors;
 
 //keyboard controls 

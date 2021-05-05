@@ -23,11 +23,6 @@ class Menu extends Phaser.Scene{
         });
         this.menubgm.play();
 
-        //high score
-        let level = {
-            highest: 0
-        };
-
         //add background assets
         this.sky = this.add.tileSprite(0, 0, 720, 480, 'sky').setOrigin(0,0);
         this.clouds = this.add.tileSprite(0, 0, 720, 480, 'clouds').setOrigin(0,0);
@@ -61,7 +56,7 @@ class Menu extends Phaser.Scene{
             this.menubgm.pause();
             this.keyPressed = true;
             this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, (cam, effect) => {
-                this.scene.start('startScene', level);
+                this.scene.start('startScene');
             });
         }
     }

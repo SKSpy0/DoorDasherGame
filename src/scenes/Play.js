@@ -5,16 +5,7 @@ class Play extends Phaser.Scene{
         this.coneCollided = false;
         this.carCollided = false;
         this.fenceCollided = false;
-
-        //for current level number
-        this.currentlevel = 0;
     }
-
-    init(data){
-        this.level = data;
-    }
-
-    
 
     preload() {
         //loading background assets
@@ -52,6 +43,7 @@ class Play extends Phaser.Scene{
         this.obstacleSpeedMax = -500;
         this.deliveryNum = 0;
         this.rating = 5;
+        level = 0;
 
         //set world gravity
         this.physics.world.gravity.y = 1000;
@@ -273,9 +265,9 @@ class Play extends Phaser.Scene{
     //simple level increase from Nathan's Paddle Parkour
     levelIncrease(){
         //increment level
-        this.currentlevel++;
-        if(this.currentlevel > 0){
-            console.log(this.currentlevel);
+        level++;
+        if(level > 0){
+            console.log(level);
             //make sure the obstacle speed doesn't increase too much
             if(this.obstacleSpeed >= this.obstacleSpeedMax){
                 this.obstacleSpeed *= 1.2;
