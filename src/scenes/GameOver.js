@@ -14,17 +14,17 @@ class GameOver extends Phaser.Scene{
             let storedScore = parseInt(localStorage.getItem('hiscore'));
             //check if current score is higher than stored
             if(level > storedScore){
-                console.log('new high score!')
+                //console.log('new high score!')
                 localStorage.setItem('hiscore', level.toString());
                 highScore = level;
                 newHighScore = true;
             } else {
-                console.log('no new high score...');
+                //console.log('no new high score...');
                 highScore = parseInt(localStorage.getItem('hiscore'));
                 newHighScore = false;
             }
         } else {
-            console.log('no high score saved, creating a new one');
+            //console.log('no high score saved, creating a new one');
             highScore = level;
             localStorage.setItem('hiscore', highScore.toString());
             newHighScore = true;

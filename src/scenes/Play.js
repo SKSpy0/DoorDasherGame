@@ -299,7 +299,7 @@ class Play extends Phaser.Scene{
     }
 
     changeRating() {
-        console.log("rating changed");
+        // console.log("rating changed");
         switch(this.rating) {
             case 4:
                 this.star5.setTexture('crackedStar');
