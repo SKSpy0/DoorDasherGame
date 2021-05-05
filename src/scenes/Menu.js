@@ -44,14 +44,7 @@ class Menu extends Phaser.Scene{
         keyUP = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP);
         keyDOWN = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.DOWN);
 
-        //UP key pressed starts fade out transition to next scene
-        keyUP.on('down', () => {
-            this.cameras.main.fadeOut(1000, 0, 0, 0);
-            this.menubgm.pause();
-        });
-        this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, (cam, effect) => {
-            this.scene.start('startScene', level);
-        })
+        this.keyPressed = false;
     }
 
     update() {
@@ -61,5 +54,15 @@ class Menu extends Phaser.Scene{
         this.telephoneP.tilePositionX += 0.2;
         this.trees.tilePositionX += 0.1;
         this.clouds.tilePositionX +=0.05;
+
+        //UP key pressed starts fade out transition to next scene
+        if (Phaser.Input.Keyboard.JustDown(keyUP) && this.keyPressed == false) {
+            this.cameras.main.fadeOut(1000, 0, 0, 0);
+            this.menubgm.pause();
+            this.keyPressed = true;
+            this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, (cam, effect) => {
+                this.scene.start('startScene', level);
+            });
+        }
     }
 }
