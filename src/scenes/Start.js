@@ -15,6 +15,7 @@ class Start extends Phaser.Scene{
         this.load.audio('startbgm', './assets/DoorDasher2_BeepBox_FullSong.mp3');
 
         this.load.spritesheet('noticeSprite', './assets/NoticeS.png', {frameWidth: 48, frameHeight: 68});
+        this.load.spritesheet('idleSprite', './assets/IdleS.png', {frameWidth: 48, frameHeight: 68});
     }
     create() {
         //fade in transition
@@ -32,16 +33,32 @@ class Start extends Phaser.Scene{
         this.add.tileSprite(0, 0, 720, 480, 'road').setOrigin(0,0);
 
         //add player animation
-        this.idleplayer = this.add.sprite(140, centerHeight+30, 'noticeSprite', 0).setOrigin(0,0);
+        this.idleplayer = this.add.sprite(140, centerHeight+30, 'idleSprite', 0).setOrigin(0,0);
+
+        //create and start idle animation
+        this.anims.create({
+            key: 'idle',
+            frameRate: 8,
+            repeat: -1,
+            frames: this.anims.generateFrameNumbers('idleSprite', { start: 0, end: 3 }),
+        });
+        this.idleplayer.anims.play('idle', true);
+
+        //switch animation to notice
+        this.idleplayer.setTexture('noticeSprite');
         this.anims.create({
             key: 'notice',
             frameRate: 8,
             repeat: -1,
             frames: this.anims.generateFrameNumbers('noticeSprite', { start: 0, end: 3 }),
         });
-        this.idleplayer.anims.play('notice', true);
+        this.time.delayedCall(2500, () => {
+            this.idleplayer.anims.play('notice', true);
+		})
 
         this.startbgm.play();
+
+        //end cutscene
         this.time.delayedCall(5000, () => {
             this.cameras.main.fadeOut(1000, 0, 0, 0);
 		})
