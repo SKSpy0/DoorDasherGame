@@ -139,6 +139,7 @@ class Play extends Phaser.Scene{
         cursors = this.input.keyboard.createCursorKeys();
     }
     
+
     // creates the delivery house
     createHouse(){
         let house = new House(this, this.obstacleSpeed, 325 - houseHeight/2);
@@ -211,7 +212,6 @@ class Play extends Phaser.Scene{
     update() {
         //scrolls background
         this.background.tilePositionX += this.moveSpeed;
-        this.road.tilePositionX += this.moveSpeed;
 
         //updates player
         this.player.update();
