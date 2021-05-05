@@ -45,7 +45,7 @@ class Play extends Phaser.Scene{
         this.cameras.main.fadeIn(1000, 0, 0, 0);
         
         //set parameters
-        this.moveSpeed = 2.25;
+        this.moveSpeed = 3;
         this.obstacleSpeed = -200;
         this.obstacleSpeedMax = -500;
         this.deliveryNum = 0;
