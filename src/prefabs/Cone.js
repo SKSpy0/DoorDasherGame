@@ -11,6 +11,8 @@ class Cone extends Phaser.Physics.Arcade.Sprite {
         this.body.setAllowGravity(false);
         this.newCone = true;
         this.platPos = platPos;
+
+        this.velocity = velocity;
     }
 
     update(){
@@ -29,5 +31,10 @@ class Cone extends Phaser.Physics.Arcade.Sprite {
     //returns current position of cone, used in checking collision with player
     getPlatPos() {
         return (this.platPos + coneHeight/2);
+    }
+
+    //match speed on level up
+    matchSpeed() {
+        this.setVelocityX(this.velocity*1.2);
     }
 }

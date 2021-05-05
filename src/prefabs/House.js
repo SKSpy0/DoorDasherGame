@@ -10,6 +10,8 @@ class House extends Phaser.Physics.Arcade.Sprite{
         this.setImmovable();
         this.body.setAllowGravity(false);
         this.platPos = spawnPos;
+
+        this.velocity = velocity;
     }
 
     update(){
@@ -21,5 +23,10 @@ class House extends Phaser.Physics.Arcade.Sprite{
     //returns current position of house, for collision checking
     getPlatPos(){
         return(this.platPos + houseHeight/2);
+    }
+
+    //match speed on level up
+    matchSpeed() {
+        this.setVelocityX(this.velocity*1.2);
     }
 }

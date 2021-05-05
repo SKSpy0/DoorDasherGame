@@ -10,6 +10,8 @@ class ConstructionFence extends Phaser.Physics.Arcade.Sprite {
         this.setImmovable();
         this.body.setAllowGravity(false);
         this.platPos = spawnPos;
+
+        this.velocity = velocity;
     }
 
     update(){
@@ -22,5 +24,10 @@ class ConstructionFence extends Phaser.Physics.Arcade.Sprite {
     //returns current position of fence for collision checking
     getPlatPos(){
         return(this.platPos);
+    }
+
+    //match speed on level up
+    matchSpeed() {
+        this.setVelocityX(this.velocity*1.2);
     }
 }

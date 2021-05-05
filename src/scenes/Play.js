@@ -44,7 +44,7 @@ class Play extends Phaser.Scene{
         
         //set parameters
         this.moveSpeed = 3;
-        this.obstacleSpeed = -200;
+        this.obstacleSpeed = -180;
         this.obstacleSpeedMax = -500;
         this.deliveryNum = 0;
         this.rating = 5;
@@ -65,7 +65,13 @@ class Play extends Phaser.Scene{
 
         //place background
         this.background = this.add.tileSprite(0, 0, 720, 480, 'background').setOrigin(0,0);
-
+        /*
+        this.sky = this.add.tileSprite(0, 0, 720, 480, 'sky').setOrigin(0,0);
+        this.clouds = this.add.tileSprite(0, 0, 720, 480, 'clouds').setOrigin(0,0);
+        this.trees = this.add.tileSprite(0, 0, 720, 480, 'trees').setOrigin(0,0);
+        this.pole = this.add.tileSprite(0, 0, 720, 480, 'telephoneP').setOrigin(0,0);
+        this.fence = this.add.tileSprite(0, 5, 720, 480, 'fence').setOrigin(0,0);
+        */
         //adding ground platform in the middle, upper, and lower section of the road y=400px, 325px, 475px
         this.middlePlatform = this.physics.add.sprite(0,400, 'platform').setOrigin(0,0);
         this.middlePlatform.body.immovable = true;
@@ -230,8 +236,13 @@ class Play extends Phaser.Scene{
     
     update() {
         //scrolls background
-        this.background.tilePositionX += this.moveSpeed;
+        /*this.clouds.tilePositionX += (this.moveSpeed*0.1);
+        this.trees.tilePositionX += (this.moveSpeed*0.2);
+        this.pole.tilePositionX += (this.moveSpeed*0.3);
+        this.fence.tilePositionX += this.moveSpeed;
+        */
         this.road.tilePositionX += this.moveSpeed;
+        this.background.tilePositionX += this.moveSpeed;
 
         //updates player
         this.player.update();
@@ -289,6 +300,15 @@ class Play extends Phaser.Scene{
             if(this.obstacleSpeed >= this.obstacleSpeedMax){
                 this.obstacleSpeed *= 1.2;
                 this.moveSpeed *= 1.2;
+
+                //adjusting speed increase to objects that already exist
+                this.houseGroup.getChildren()[0].matchSpeed();
+                for(var i = 0; i < this.coneGroup.getChildren().length; i++) {
+                    this.coneGroup.getChildren()[i].matchSpeed();
+                }
+                for(var i = 0; i < this.fenceGroup.getChildren().length; i++) {
+                    this.fenceGroup.getChildren()[i].matchSpeed();
+                }
             }
             //increments the delivery number text
             this.deliveryNum++;
