@@ -172,9 +172,9 @@ class Play extends Phaser.Scene{
         let cone = new Cone(this, this.obstacleSpeed, spawnPos - coneHeight/2);
         //adds collision check if player and cone are on the same y value
         this.physics.add.overlap(this.player, cone, (player, cone) => {
-            if(cone.getPlatPos() == player.currentPlatformY()) {
+            if(cone.alpha != 0 && cone.getPlatPos() == player.currentPlatformY()) {
                 this.coneCollided = true;
-                cone.destroy();
+                cone.alpha = 0;
             }
         });
         this.coneGroup.add(cone);
@@ -209,7 +209,7 @@ class Play extends Phaser.Scene{
     }
     
     update() {
-        //scrolls background and road
+        //scrolls background
         this.background.tilePositionX += this.moveSpeed;
         this.road.tilePositionX += this.moveSpeed;
 
