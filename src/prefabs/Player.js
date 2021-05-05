@@ -22,7 +22,8 @@ class Player extends Phaser.Physics.Arcade.Sprite{
         this.anims.play('run', true);
 
         // Adjust player box
-        this.body.width = 80;
+        this.body.width = 70;
+        this.body.offset.x = 20;
     }
 
     update() {

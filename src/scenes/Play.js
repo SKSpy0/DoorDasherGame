@@ -49,6 +49,7 @@ class Play extends Phaser.Scene{
         this.obstacleSpeed = -200;
         this.obstacleSpeedMax = -500;
         this.deliveryNum = 0;
+        this.rating = 5; //lives
 
         //set world gravity
         this.physics.world.gravity.y = 1000;
@@ -80,6 +81,10 @@ class Play extends Phaser.Scene{
         // setting up number of deliveries
         this.add.text(10, 10, "Completed Deliveries:", uiConfig).setOrigin(0,0);
         this.deliveryNumText = this.add.text(275, 10, this.deliveryNum, uiConfig).setOrigin(0,0);
+
+        // temporary lives counter
+        this.add.text(400, 10, "Lives:", uiConfig).setOrigin(0,0);
+        this.ratingText = this.add.text(480, 10, this.rating, uiConfig).setOrigin(0,0);
         
         //creating player and setting bounds
         this.anims.create({
@@ -221,10 +226,22 @@ class Play extends Phaser.Scene{
             if(this.coneCollided){
                 console.log("collided with cone")
                 this.cameras.main.shake(100, 0.0035);
+
+                //lose one life
+                if(this.rating > 0) {
+                    this.rating--;
+                    this.ratingText.text = this.rating;
+                }
             }
             if(this.fenceCollided){
                 console.log("collided with fence");
                 this.cameras.main.shake(100, 0.0035);
+
+                // lose one life
+                if(this.rating > 0) {
+                    this.rating--;
+                    this.ratingText.text = this.rating;
+                }
             }
         }
         this.coneCollided = false;
