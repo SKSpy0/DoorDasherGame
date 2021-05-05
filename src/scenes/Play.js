@@ -18,7 +18,13 @@ class Play extends Phaser.Scene{
 
     preload() {
         //loading background assets
+        this.load.image('sky', './assets/bgSky.png');
+        this.load.image('clouds', './assets/bsClouds.png');
+        this.load.image('platform', './assets/road.png');
         this.load.image('road', './assets/bgRoad.png');
+        this.load.image('telephoneP', './assets/bgTelephoneP.png');
+        this.load.image('trees', './assets/bgTrees.png');
+        this.load.image('fence', './assets/bgFence.png');
         this.load.image('background', './assets/Nbackground.png');
 
         //loading player
@@ -45,6 +51,7 @@ class Play extends Phaser.Scene{
         this.obstacleSpeed = -200;
         this.obstacleSpeedMax = -500;
         this.deliveryNum = 0;
+        this.rating = 5;
 
         //set world gravity
         this.physics.world.gravity.y = 1000;
@@ -226,7 +233,6 @@ class Play extends Phaser.Scene{
             if(this.coneCollided){
                 console.log("collided with cone")
                 this.cameras.main.shake(100, 0.0035);
-
                 //lose one life
                 if(this.rating > 0) {
                     this.rating--;
@@ -284,6 +290,7 @@ class Play extends Phaser.Scene{
     }
 
     changeRating() {
+        console.log("rating changed");
         switch(this.rating) {
             case 4:
                 this.star5.setTexture('crackedStar');
