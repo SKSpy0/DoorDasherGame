@@ -28,7 +28,6 @@ class Play extends Phaser.Scene{
         this.load.image('background', './assets/Nbackground.png');
 
         //loading player
-        // this.load.image('playerSprite', './assets/player.png');
         this.load.spritesheet('playerSprite', './assets/RunS.png', {frameWidth: 96, frameHeight: 176});
 
         //load house asset
@@ -38,6 +37,9 @@ class Play extends Phaser.Scene{
         //load obstacles
         this.load.image('cone','./assets/cone.png');
         this.load.image('constructionFence', './assets/Rbarricade.png');
+        
+        this.load.image('star', './assets/Star.png');
+        this.load.image('crackedStar', './assets/CrackedStar.png');
     }
 
     create(){
@@ -82,9 +84,13 @@ class Play extends Phaser.Scene{
         this.add.text(10, 10, "Completed Deliveries:", uiConfig).setOrigin(0,0);
         this.deliveryNumText = this.add.text(275, 10, this.deliveryNum, uiConfig).setOrigin(0,0);
 
-        // temporary lives counter
-        this.add.text(400, 10, "Lives:", uiConfig).setOrigin(0,0);
-        this.ratingText = this.add.text(480, 10, this.rating, uiConfig).setOrigin(0,0);
+        // rating
+        this.star1 = this.add.tileSprite(450, 7, 42, 42, 'star').setOrigin(0,0);
+        this.star2 = this.add.tileSprite(500, 7, 42, 42, 'star').setOrigin(0,0);
+        this.star3 = this.add.tileSprite(550, 7, 42, 42, 'star').setOrigin(0,0);
+        this.star4 = this.add.tileSprite(600, 7, 42, 42, 'star').setOrigin(0,0);
+        this.star5 = this.add.tileSprite(650, 7, 42, 42, 'star').setOrigin(0,0);
+        this.add.text(350, 10, "Rating:", uiConfig).setOrigin(0,0);
         
         //creating player and setting bounds
         this.anims.create({
@@ -230,7 +236,7 @@ class Play extends Phaser.Scene{
                 //lose one life
                 if(this.rating > 0) {
                     this.rating--;
-                    this.ratingText.text = this.rating;
+                    this.changeRating();
                 }
             }
             if(this.fenceCollided){
@@ -240,12 +246,13 @@ class Play extends Phaser.Scene{
                 // lose one life
                 if(this.rating > 0) {
                     this.rating--;
-                    this.ratingText.text = this.rating;
+                    this.changeRating();
                 }
             }
         }
         this.coneCollided = false;
         this.fenceCollided = false;
+
 
         //updates platform
         if (this.player.currentPlatform() == "middle") {
@@ -279,6 +286,26 @@ class Play extends Phaser.Scene{
             this.deliveryNumText.text = this.deliveryNum;
             //adjust the player jump
             this.player.nextLevel();
+        }
+    }
+
+    changeRating() {
+        switch(this.rating) {
+            case 4:
+                this.star5.setTexture('crackedStar');
+                break;
+            case 3:
+                this.star4.setTexture('crackedStar');
+                break;
+            case 2:
+                this.star3.setTexture('crackedStar');
+                break;
+            case 1:
+                this.star2.setTexture('crackedStar');
+                break;
+            case 0:
+                this.star1.setTexture('crackedStar');
+                break;
         }
     }
 }
