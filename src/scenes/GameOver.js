@@ -44,6 +44,7 @@ class GameOver extends Phaser.Scene{
         //display restart text after 5 seconds
         this.time.delayedCall(5000, () => {
             this.add.text(centerWidth, centerHeight+200, 'Press UP to Restart', { fontFamily: 'CustomFont', fontSize: '20px', color: 'red'}).setOrigin(0.5);
+            this.add.text(centerWidth)
 		});
         //restart with up key
         keyUP = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP);
