@@ -47,7 +47,7 @@ class Play extends Phaser.Scene{
         this.cameras.main.fadeIn(1000, 0, 0, 0);
         
         //set parameters
-        this.moveSpeed = 2.25;
+        this.moveSpeed = 3;
         this.obstacleSpeed = -200;
         this.obstacleSpeedMax = -500;
         this.deliveryNum = 0;
@@ -150,6 +150,7 @@ class Play extends Phaser.Scene{
         cursors = this.input.keyboard.createCursorKeys();
     }
     
+
     // creates the delivery house
     createHouse(){
         let house = new House(this, this.obstacleSpeed, 325 - houseHeight/2);
@@ -183,9 +184,9 @@ class Play extends Phaser.Scene{
         let cone = new Cone(this, this.obstacleSpeed, spawnPos - coneHeight/2);
         //adds collision check if player and cone are on the same y value
         this.physics.add.overlap(this.player, cone, (player, cone) => {
-            if(cone.getPlatPos() == player.currentPlatformY()) {
+            if(cone.alpha != 0 && cone.getPlatPos() == player.currentPlatformY()) {
                 this.coneCollided = true;
-                cone.destroy();
+                cone.alpha = 0;
             }
         });
         this.coneGroup.add(cone);
@@ -220,9 +221,8 @@ class Play extends Phaser.Scene{
     }
     
     update() {
-        //scrolls background and road
+        //scrolls background
         this.background.tilePositionX += this.moveSpeed;
-        this.road.tilePositionX += this.moveSpeed;
 
         //updates player
         this.player.update();
