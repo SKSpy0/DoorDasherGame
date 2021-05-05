@@ -9,17 +9,22 @@ class GameOver extends Phaser.Scene{
     }
 
     create(){
+        //fade in transition
         this.cameras.main.fadeIn(1000, 0, 0, 0);
+        //play game over music
         this.endbgm = this.sound.add('endbgm', {
             loop:false,
             volume: 0.5
         });
         this.endbgm.play();
+        //display game over image
         this.add.tileSprite(0, 0, 720, 480, 'gameOver').setOrigin(0,0);
 
+        //display restart text after 5 seconds
         this.time.delayedCall(5000, () => {
             this.add.text(centerWidth, centerHeight+200, 'Press UP to Restart', { fontFamily: 'CustomFont', fontSize: '20px', color: 'red'}).setOrigin(0.5);
-		})
+		});
+        //restart with up key
         keyUP = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP);
         this.keyPressed = false;
     }
