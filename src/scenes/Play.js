@@ -4,8 +4,7 @@ class Play extends Phaser.Scene{
         //bool for collisions
         this.coneCollided = false;
         this.carCollided = false;
-        this.holeCollided = false;
-        this.constructFenceCollided = false;
+        this.fenceCollided = false;
 
         //for current level number
         this.currentlevel = 0;
@@ -38,7 +37,7 @@ class Play extends Phaser.Scene{
 
         //load obstacles
         this.load.image('cone','./assets/cone.png');
-        this.load.image('manhole', './assets/manHoleHole.png');
+        this.load.image('constructionFence', './assets/Rbarricade.png');
     }
 
     create(){
@@ -46,7 +45,7 @@ class Play extends Phaser.Scene{
         this.cameras.main.fadeIn(1000, 0, 0, 0);
         
         //set parameters
-        this.moveSpeed = 3
+        this.moveSpeed = 2.25;
         this.obstacleSpeed = -200;
         this.obstacleSpeedMax = -500;
         this.deliveryNum = 0;
@@ -79,8 +78,8 @@ class Play extends Phaser.Scene{
         }
 
         // setting up number of deliveries
-        this.add.text(10, 10, "Delivery Num:", uiConfig).setOrigin(0,0);
-        this.deliveryNumText = this.add.text(185, 10, this.deliveryNum, uiConfig).setOrigin(0,0);
+        this.add.text(10, 10, "Completed Deliveries:", uiConfig).setOrigin(0,0);
+        this.deliveryNumText = this.add.text(275, 10, this.deliveryNum, uiConfig).setOrigin(0,0);
         
         //creating player and setting bounds
         this.anims.create({
@@ -93,23 +92,20 @@ class Play extends Phaser.Scene{
         this.player.setCollideWorldBounds(true);
         this.player.depth = 1;
 
-        // set up each obstacle group (cone, manhole, car, construction fence)
+        // set up each obstacle group (cone, construction fence, house)
         this.coneGroup = this.add.group({
             runChildUpdate: true
         });
-        this.manholeGroup = this.add.group({
+        this.fenceGroup = this.add.group({
             runChildUpdate: true
         });
         this.houseGroup = this.add.group({
             runChildUpdate: true
         });
 
-        //wait a bit before spawning obstacles
+        //wait a bit before spawning objects
         this.time.delayedCall(3000, () => {
             this.addCone();
-        })
-        this.time.delayedCall(5500, () => {
-            this.addManhole();
         })
         this.time.delayedCall(1000, () => {
             this.createHouse();
@@ -125,8 +121,16 @@ class Play extends Phaser.Scene{
 
         //loop house calls
         this.houseSpawnTimer = this.time.addEvent({
-            delay: 10000,
+            delay: 15000,
             callback: this.createHouse,
+            callbackScope: this,
+            loop: true
+        });
+
+        //loop fence calls
+        this.fenceSpawnTimer = this.time.addEvent({
+            delay: 8000,
+            callback: this.addFence,
             callbackScope: this,
             loop: true
         });
@@ -176,17 +180,32 @@ class Play extends Phaser.Scene{
         this.coneGroup.add(cone);
     }
     
-    addManhole(){
-        //manhole only spawn on middle since thats the road
-        let spawnPos = 400;
-        let manhole = new Manhole(this, this.obstacleSpeed, spawnPos);
-        this.physics.add.overlap(this.player, manhole, (player, manhole) => {
-            if(manhole.getPlatPos() == player.currentPlatformY()){
-                this.holeCollided = true;
-                manhole.destroy();
+    addFence(){
+        //fence will spawn on all rows
+        let fence01 = new ConstructionFence(this, this.obstacleSpeed, 325);
+        this.physics.add.overlap(this.player, fence01, (player, fence01) => {
+            if(fence01.getPlatPos() == player.currentPlatformY()){
+                this.fenceCollided = true;
+                fence01.destroy();
             }
         });
-        this.manholeGroup.add(manhole);
+        let fence02 = new ConstructionFence(this, this.obstacleSpeed, 400);
+        this.physics.add.overlap(this.player, fence02, (player, fence02) => {
+            if(fence02.getPlatPos() == player.currentPlatformY()){
+                this.fenceCollided = true;
+                fence02.destroy();
+            }
+        });
+        let fence03 = new ConstructionFence(this, this.obstacleSpeed, 475);
+        this.physics.add.overlap(this.player, fence03, (player, fence03) => {
+            if(fence03.getPlatPos() == player.currentPlatformY()){
+                this.fenceCollided = true;
+                fence03.destroy();
+            }
+        });
+        this.fenceGroup.add(fence01);
+        this.fenceGroup.add(fence02);
+        this.fenceGroup.add(fence03);
     }
     
     update() {
@@ -203,13 +222,13 @@ class Play extends Phaser.Scene{
                 console.log("collided with cone")
                 this.cameras.main.shake(100, 0.0035);
             }
-            if(this.holeCollided){
-                console.log("collided with manhole");
+            if(this.fenceCollided){
+                console.log("collided with fence");
                 this.cameras.main.shake(100, 0.0035);
             }
         }
         this.coneCollided = false;
-        this.holeCollided = false;
+        this.fenceCollided = false;
 
         //updates platform
         if (this.player.currentPlatform() == "middle") {

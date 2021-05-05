@@ -17,7 +17,7 @@ class Cone extends Phaser.Physics.Arcade.Sprite {
         //recursive call when cone is half way to spawn more cones
         if(this.newCone && this.x < game.config.width/2){
             this.newCone = false;
-            this.scene.addCone(this.parent, this.velocity);
+            this.scene.addCone(this.velocity);
         }
 
         //destroys cone when off screen
