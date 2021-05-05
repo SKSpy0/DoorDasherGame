@@ -9,11 +9,16 @@ class House extends Phaser.Physics.Arcade.Sprite{
         this.setVelocityX(velocity);
         this.setImmovable();
         this.body.setAllowGravity(false);
-        this.newHouse = true;
         this.platPos = spawnPos;
     }
 
-    //returns current position of house
+    update(){
+        //destroys house when off screen
+        if(this.x < -this.width){
+            this.destroy();
+        }
+    }
+    //returns current position of house, for collision checking
     getPlatPos(){
         return(this.platPos + houseHeight/2);
     }
