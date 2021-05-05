@@ -10,7 +10,7 @@ class Start extends Phaser.Scene{
         this.load.image('road', './assets/bgRoad.png');
         this.load.image('telephoneP', './assets/bgTelephoneP.png');
         this.load.image('trees', './assets/bgTrees.png');
-        this.load.image('pizzeria', './assets/pizzeria.png');
+        this.load.image('pizzeria', './assets/Pizzeria.png');
 
         this.load.audio('startbgm', './assets/DoorDasher2_BeepBox_FullSong.mp3');
 

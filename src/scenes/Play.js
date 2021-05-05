@@ -22,11 +22,11 @@ class Play extends Phaser.Scene{
         this.load.spritesheet('playerSprite', './assets/RunS.png', {frameWidth: 96, frameHeight: 176});
 
         //load house asset
-        this.load.image('houseSprite', './assets/house.png');
+        this.load.image('houseSprite', './assets/House.png');
         this.load.image('deliveredHouse', './assets/deliveredhouse.png');
 
         //load obstacles
-        this.load.image('cone','./assets/cone.png');
+        this.load.image('cone','./assets/Cone.png');
         this.load.image('constructionFence', './assets/Rbarricade.png');
         
         //load star ratings
