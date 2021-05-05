@@ -43,7 +43,7 @@ class GameOver extends Phaser.Scene{
 
         //display restart text after 5 seconds
         this.time.delayedCall(5000, () => {
-            this.add.text(centerWidth, centerHeight+200, 'Press UP to Restart', { fontFamily: 'CustomFont', fontSize: '20px', color: 'red'}).setOrigin(0.5);
+            this.add.text(centerWidth, centerHeight+200, 'Press SPACE to Restart', { fontFamily: 'CustomFont', fontSize: '20px', color: 'red'}).setOrigin(0.5);
             this.add.text(centerWidth, centerHeight-200, 'Score:', { fontFamily: 'CustomFont', fontSize: '20px', color: 'red'}).setOrigin(0.5);
             this.add.text(centerWidth+33, centerHeight-211, level, { fontFamily: 'CustomFont', fontSize: '20px', color: 'red'}).setOrigin(0,0);
             if (newHighScore == true) {
@@ -55,12 +55,12 @@ class GameOver extends Phaser.Scene{
             }
 		});
         //restart with up key
-        keyUP = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP);
+        keySPACE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
         this.keyPressed = false;
     }
 
     update() {
-        if (Phaser.Input.Keyboard.JustDown(keyUP) && this.keyPressed == false) {
+        if (Phaser.Input.Keyboard.JustDown(keySPACE) && this.keyPressed == false) {
             this.cameras.main.fadeOut(1000, 0, 0, 0);
             this.endbgm.pause();
             this.keyPressed = true;

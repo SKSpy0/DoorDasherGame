@@ -31,4 +31,13 @@ let newHighScore = false;
 let cursors;
 
 //keyboard controls 
-let keyUP, keyDOWN;
+let keyUP, keyDOWN, keySPACE;
+
+//Door Dasher created by "Dog Squad"
+//Jesse Park (Art & Sound Designer), Timothy Tai (Programmer), William Lee (Programmer)
+//Completed 5/4/21
+//Creative Tilt: 
+//Our game implements three lanes of movement for the character, by creating 3 platforms of where the player can move about
+//Taken from Nathan's Paddle Parkour of parent-child obstacle spawning we implemented that to work with our 3 platform system
+//Having multiple checks which check the player's platform position and the obstacle's platform position to determine a collision has been made (EX: Play.js, Line 200)
+//Our sound design works really well with our game, from our playtests, the testers commented they really enjoyed the sounds of getting hit and completing a delivery, creating a more satisfying experience when playing well

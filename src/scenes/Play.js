@@ -236,11 +236,6 @@ class Play extends Phaser.Scene{
     
     update() {
         //scrolls background
-        /*this.clouds.tilePositionX += (this.moveSpeed*0.1);
-        this.trees.tilePositionX += (this.moveSpeed*0.2);
-        this.pole.tilePositionX += (this.moveSpeed*0.3);
-        this.fence.tilePositionX += this.moveSpeed;
-        */
         this.road.tilePositionX += this.moveSpeed;
         this.background.tilePositionX += this.moveSpeed;
 
