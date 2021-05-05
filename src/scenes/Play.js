@@ -299,7 +299,7 @@ class Play extends Phaser.Scene{
             case 0:
                 this.star1.setTexture('crackedStar');
                 this.cameras.main.fadeOut(500, 0, 0, 0);
-                this.sound.get('startbgm').stop();
+                this.game.sound.stopAll();
                 this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, (cam, effect) => {
                     this.scene.start('gameOverScene', level);
                 });
